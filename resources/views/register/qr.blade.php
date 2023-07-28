@@ -198,7 +198,7 @@
                     let html = '';
                     $.each(res.data, function(key, val) {
                         console.log(val);
-                        if (val.ticket_count < 1) {
+                        if (val.ticket_count < 25) {
                             html += `<option value="${val.id_studio}" selected>${val.tgl} - ${val.jam_mulai} - ${val.jam_selesai}</option>`;
                         } else {
                             html += `<option disabled value="${val.id_studio}" selected>${val.tgl} - ${val.jam_mulai} - ${val.jam_selesai} |  <span class="text-danger">Full Booked</span></option>`;
