@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Tickets;
 use Illuminate\Support\Facades\Mail;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
 
 class C_PristineTickets extends Controller
 {
@@ -63,7 +65,12 @@ class C_PristineTickets extends Controller
             'kota' => $request->kota
         ]);
 
-        Mail::to($user->email)->send(new QrCodeMail($user));
+        $code_ticket = $user->tickets_code;
+
+        $qrcode = QrCode::size(300)->generate($code_ticket);
+        $barcode = DNS2D::getBarcodePNG($code_ticket, 'QRCODE', 5, 5);
+
+        Mail::to($user->email)->send(new QrCodeMail($user, $barcode));
 
         return redirect()->back()->with(['message' => 'Berhasil Mendaftar. Silahkan cek email anda untuk melihat ticket']);
     }

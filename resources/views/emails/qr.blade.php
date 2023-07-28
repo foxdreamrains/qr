@@ -5,20 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="x-apple-disable-message-reformatting">
   <title>Tickets QR</title>
-  <!--[if mso]>
-  <style>
-    table {border-collapse:collapse;border-spacing:0;border:none;margin:0;}
-    div, td {padding:0;}
-    div {margin:0 !important;}
-  </style>
-  <noscript>
-    <xml>
-      <o:OfficeDocumentSettings>
-        <o:PixelsPerInch>96</o:PixelsPerInch>
-      </o:OfficeDocumentSettings>
-    </xml>
-  </noscript>
-  <![endif]-->
   <style>
     table, td, div, h1, p {
       font-family: Arial, sans-serif;
@@ -52,11 +38,6 @@
     <table role="presentation" style="width:100%;border:none;border-spacing:0;">
       <tr>
         <td align="center" style="padding:0;">
-          <!--[if mso]>
-          <table role="presentation" align="center" style="width:600px;">
-          <tr>
-          <td>
-          <![endif]-->
           <table role="presentation" style="width:94%;max-width:600px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;">
             <tr>
               <td style="padding:40px 30px 30px 30px;text-align:center;font-size:24px;font-weight:bold;">
@@ -73,7 +54,12 @@
                   <br>
                   Selamat datang di Event kami #YOGA Berikut QR Kamu ntuk Melaksanakan Kunjungan Ke Kelas Yoga.
                   <br><br>
-                  {!!DNS2D::getBarcodeSVG($user->tickets_code, 'QRCODE',15,15)!!}
+                  <div>
+                    {{-- {!!DNS2D::getBarcodeHTML($user->tickets_code, 'QRCODE',15,15)!!} --}}
+                    <?php
+                        $qrCodeAsPng = QrCode::format('png')->size(500)->generate($user->tickets_code);
+                    ?>
+                    <img src="{{ $message->embedData($qrCodeAsPng, 'nameForAttachment.png') }}" />
                 </p>
               </td>
             </tr>

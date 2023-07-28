@@ -22,7 +22,7 @@
                 <a class="nav-link active" aria-current="page" href="#">Syarat Pendaftaran</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Pendaftaran</a>
+                <a class="nav-link" href="{{route('registerqr')}}">Pendaftaran</a>
               </li>
             </ul>
             <form class="d-flex" role="search">
@@ -74,8 +74,8 @@
                         <td>{{ $t->no_ktp }}</td>
                         <td>{{ $t->email }}</td>
                         <td>{{ $t->kode_pos }}</td>
-                        <td>{{ $t->alamat }}</td>
                         <td>{{ $t->no_hp }}</td>
+                        <td>{{ $t->alamat }}</td>
                         <td>{{ $t->studio->nama_studio }}</td>
                         <td>{{ $t->studio->jam_mulai }} - {{ $t->jam_selesai }}</td>
                         <td>

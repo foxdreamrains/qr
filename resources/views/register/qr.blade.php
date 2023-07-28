@@ -37,7 +37,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Syarat Pendaftaran</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pendaftaran</a>
+                        <a class="nav-link" href="{{route('registerqr')}}">Pendaftaran</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">

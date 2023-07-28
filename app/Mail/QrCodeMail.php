@@ -12,15 +12,17 @@ class QrCodeMail extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+    public $barcode;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $barcode)
     {
         $this->user = $user;
+        $this->barcode = $barcode;
     }
 
     /**
