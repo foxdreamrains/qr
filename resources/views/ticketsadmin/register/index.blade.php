@@ -58,6 +58,22 @@
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('cabang.index') }}" class="nav-link" style="color: black;">
+                <i class="nav-icon fas fa-hotel" style="color: black;"></i>
+                <p>
+                    Data Cabang
+                </p>
+                </a>
+            </li>
+             <li class="nav-item">
+            <a href="{{ route('event.index') }}" class="nav-link" style="color: black;">
+              <i class="nav-icon fas fa-calendar-days" style="color: black;"></i>
+              <p>
+                Data Event
+              </p>
+            </a>
+          </li>
 
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-header" style="color: black;">LIVE SITE</li>
@@ -137,8 +153,8 @@
                                             <th>kode_pos</th>
                                             <th>alamat</th>
                                             <th>no_hp</th>
-                                            <th>event_date</th>
                                             <th>studio</th>
+                                            <th>Waktu</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -147,15 +163,15 @@
                                         @foreach($tickets as $t)
                                         <tr>
                                             <td>{{ $no }}</td>
-                                            <td>{{ DNS2D::getBarcodeHTML('34343434343','QRCODE')  }}</td>
+                                            <td>{!! DNS2D::getBarcodeHTML($t->tickets_code,'QRCODE')  !!}</td>
                                             <td>{{ $t->nama }}</td>
                                             <td>{{ $t->no_ktp }}</td>
                                             <td>{{ $t->email }}</td>
                                             <td>{{ $t->kode_pos }}</td>
                                             <td>{{ $t->alamat }}</td>
                                             <td>{{ $t->no_hp }}</td>
-                                            <td>{{ $t->event_date }}</td>
-                                            <td>{{ $t->studio }}</td>
+                                            <td>{{ $t->studio->nama_studio }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($t->studio->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($t->studio->jam_selesai)->format('H:i') }}</td>
                                             <td> <a href="{{ route('cmsFormRegisterDelete', $t->id_tickets) }}" type="button" class="btn btn-danger btn-sm">Delete</a></td>
 
                                         </tr>

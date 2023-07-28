@@ -15,4 +15,9 @@ class Studios extends Model
     {
         return $this->hasMany(Tickets::class, 'studios_id', 'id_studio');
     }
+
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class, 'cabangs_id', 'id');
+    }
 }

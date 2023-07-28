@@ -1,5 +1,5 @@
 @extends('layouts.appticketsadmin')
-@section('title', 'Dashboard')
+@section('title', 'Buat Event')
 @section('css')
 <style>
   .info{
@@ -68,6 +68,15 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="{{ route('event.index') }}" class="nav-link" style="color: black;">
+              <i class="nav-icon fas fa-calendar-days" style="color: black;"></i>
+              <p>
+                Data Event
+              </p>
+            </a>
+          </li>
+
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-header" style="color: black;">LIVE SITE</li>
           <li class="nav-item">
@@ -95,12 +104,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Chart</h1>
+                    <h1 class="m-0">Buat Event Baru</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Chart</li>
+                        <li class="breadcrumb-item active">Buat Event Baru</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -112,12 +121,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Chart</h1>
+                    <h1>Buat Event Baru</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Chart</li>
+                        <li class="breadcrumb-item active">Buat Event Baru</li>
                     </ol>
                 </div>
             </div>
@@ -127,63 +136,82 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
-
-                <div class="col-12 col-sm-6 col-md-3">
-                    <a href="{{ route('cmsFormRegister') }}" style="color:black;">
-                        <div class="info-box mb-3">
-                            <span class="info-box-icon elevation-1" style="background: #ffffff; color: #41a59c;">
-                                <i class="nav-icon fas fa-user-friends"></i>
-                            </span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Form Register</span>
-                                <span class="info-box-number">
-                                    {{ $master }}
-                                </span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                    </a>
-                    <!-- /.info-box -->
+            <div class="card">
+                <div class="card-header">
+                    <a href="{{route('event.index')}}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i></a>
                 </div>
-
-                <div class="col-12 col-sm-6 col-md-3">
-                    <a href="{{ route('cmsmaster') }}" style="color:black;">
-                        <div class="info-box mb-3">
-                            <span class="info-box-icon elevation-1" style="background: #ffffff; color: #41a59c;">
-                                <i class="nav-icon fas fa-person-booth"></i>
-                            </span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Hadir</span>
-                                <span class="info-box-number">
-                                    {{ $master }}
+                <div class="card-body">
+                    <form action="{{route('event.store')}}" method="POST">
+                        @csrf
+                        <div class="form-group mb-3">
+                            <label for="">Cabang Event Di Adakan</label>
+                            <select name="cabangs_id" class="form-control @error('cabangs_id') is-invalid @enderror">
+                                <option value="">- Pilih -</option>
+                                @foreach ($cabang as $item)
+                                    <option value="{{$item->id}}">{{$item->nama_kota}}</option>
+                                @endforeach
+                            </select>
+                            @error('cabangs_id')
+                                <span class="invalid-feedback">
+                                    {{$message}}
                                 </span>
-                            </div>
-                            <!-- /.info-box-content -->
+                            @enderror
                         </div>
-                    </a>
-                    <!-- /.info-box -->
-                </div>
+                        <div class="form-group mb-3">
+                            <label for="">Studio Di Adakan Event</label>
+                            <input type="text" name="nama_studio" class="form-control @error('nama_studio') is-invalid @enderror">
+                            @error('nama_studio')
+                                <span class="invalid-feedback">
+                                    {{$message}}
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="">Tanggal Di Adakan Event</label>
+                            <input type="date" name="tgl" class="form-control @error('tgl') is-invalid @enderror">
+                            @error('tgl')
+                                <span class="invalid-feedback">
+                                    {{$message}}
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="">Jam Mulai</label>
+                            <input type="time" name="jam_mulai" class="form-control @error('jam_mulai') is-invalid @enderror">
+                            @error('jam_mulai')
+                                <span class="invalid-feedback">
+                                    {{$message}}
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="">Jam Selesai</label>
+                            <input type="time" name="jam_selesai" class="form-control @error('jam_selesai') is-invalid @enderror">
+                            @error('jam_selesai')
+                                <span class="invalid-feedback">
+                                    {{$message}}
+                                </span>
+                            @enderror
+                        </div>
 
-                <!-- /.col -->
+                        <div class="btn-send">
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                            <button type="submit" class="btn btn-primary" style="float: right">Buat Event</button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <!-- /.row -->
         </div>
-</div>
+    </div>
 </div>
 </section>
+@endsection
 
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-      <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-    @endsection
-
-    @section('script')
-    <script>
-    </script>
-    @endsection
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('#event-table').DataTable();
+    });
+</script>
+@endsection

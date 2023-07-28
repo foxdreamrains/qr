@@ -1,5 +1,5 @@
 @extends('layouts.appticketsadmin')
-@section('title', 'Dashboard')
+@section('title', 'Buat Cabang Baru')
 @section('css')
 <style>
   .info{
@@ -95,12 +95,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Chart</h1>
+                    <h1 class="m-0">Buat Cabang baru</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Chart</li>
+                        <li class="breadcrumb-item active">Buat Cabang baru</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -112,12 +112,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Chart</h1>
+                    <h1>Buat Cabang baru</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Chart</li>
+                        <li class="breadcrumb-item active">Buat Cabang baru</li>
                     </ol>
                 </div>
             </div>
@@ -127,63 +127,41 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
-
-                <div class="col-12 col-sm-6 col-md-3">
-                    <a href="{{ route('cmsFormRegister') }}" style="color:black;">
-                        <div class="info-box mb-3">
-                            <span class="info-box-icon elevation-1" style="background: #ffffff; color: #41a59c;">
-                                <i class="nav-icon fas fa-user-friends"></i>
-                            </span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Form Register</span>
-                                <span class="info-box-number">
-                                    {{ $master }}
-                                </span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                    </a>
-                    <!-- /.info-box -->
+            <div class="card">
+                <div class="card-header">
+                    <a href="{{route('cabang.index')}}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i></a>
                 </div>
-
-                <div class="col-12 col-sm-6 col-md-3">
-                    <a href="{{ route('cmsmaster') }}" style="color:black;">
-                        <div class="info-box mb-3">
-                            <span class="info-box-icon elevation-1" style="background: #ffffff; color: #41a59c;">
-                                <i class="nav-icon fas fa-person-booth"></i>
-                            </span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Hadir</span>
-                                <span class="info-box-number">
-                                    {{ $master }}
-                                </span>
-                            </div>
-                            <!-- /.info-box-content -->
+                <div class="card-body">
+                    <form action="{{route('cabang.store')}}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="">Nama Cabang</label>
+                            <input type="text" class="form-control @error('nama_kota') is-invalid @enderror" name="nama_kota">
+                            @error('nama_kota')
+                              <span class="invalid-feedback">
+                                {{$message}}
+                              </span>
+                            @enderror
                         </div>
-                    </a>
-                    <!-- /.info-box -->
-                </div>
 
-                <!-- /.col -->
+                        <div class="btn-send">
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                            <button type="submit" class="btn btn-primary" style="float: right">Tambah</button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <!-- /.row -->
         </div>
-</div>
+    </div>
 </div>
 </section>
+@endsection
 
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-      <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-    @endsection
-
-    @section('script')
-    <script>
-    </script>
-    @endsection
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('#cabang-table').DataTable();
+    });
+</script>
+@endsection

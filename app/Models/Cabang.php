@@ -13,6 +13,6 @@ class Cabang extends Model
 
     public function studio()
     {
-        return $this->hasMany(Studios::class, 'id_studio');
+        return $this->hasMany(Studios::class, 'cabangs_id', 'id');
     }
 }

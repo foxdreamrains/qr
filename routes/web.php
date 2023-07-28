@@ -8,6 +8,8 @@ use App\Http\Controllers\C_PristineTickets;
 use App\Http\Controllers\C_PristineTicketsAdmin;
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DataCabangController;
+use App\Http\Controllers\DataEventController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,6 +43,20 @@ Route::get('CMS/dashboard', [C_PristineTicketsAdmin::class, 'dashboard'])->name(
 // # Register
 Route::get('CMS/FormRegister', [C_PristineTicketsAdmin::class, 'form_Register'])->name('cmsFormRegister')->middleware('auth');
 Route::get('CMS/FormRegister/delete/{id}', [C_PristineTicketsAdmin::class, 'form_Register_delete'])->name('cmsFormRegisterDelete')->middleware('auth');
+
+// cabang
+Route::get('CMS/cabang', [DataCabangController::class, 'index'])->name('cabang.index')->middleware(['auth']);
+Route::get('CMS/cabang/add', [DataCabangController::class, 'create'])->name('cabang.create')->middleware(['auth']);
+Route::post('CMS/cabang/create', [DataCabangController::class, 'store'])->name('cabang.store')->middleware(['auth']);
+Route::delete('CMS/cabang/{id}', [DataCabangController::class, 'destroy'])->name('cabang.delete')->middleware(['auth']);
+
+//event
+Route::get('CMS/event', [DataEventController::class, 'index'])->name('event.index')->middleware(['auth']);
+Route::get('CMS/event/add', [DataEventController::class, 'create'])->name('event.create')->middleware(['auth']);
+Route::get('CMS/event/{id_studio}', [DataEventController::class, 'edit'])->name('event.edit')->middleware(['auth']);
+Route::post('CMS/event/create', [DataEventController::class, 'store'])->name('event.store')->middleware(['auth']);
+Route::put('CMS/event/update/{id_studio}', [DataEventController::class, 'update'])->name('event.update')->middleware(['auth']);
+Route::delete('CMS/event/{id}', [DataEventController::class, 'destroy'])->name('event.delete')->middleware(['auth']);
 
 // # Master
 Route::get('CMS/master', [C_MasterAdmin::class, 'master'])->name('cmsmaster')->middleware('auth');

@@ -1,5 +1,5 @@
 @extends('layouts.appticketsadmin')
-@section('title', 'Dashboard')
+@section('title', 'Data Cabang')
 @section('css')
 <style>
   .info{
@@ -68,6 +68,15 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="{{ route('event.index') }}" class="nav-link" style="color: black;">
+              <i class="nav-icon fas fa-calendar-days" style="color: black;"></i>
+              <p>
+                Data Event
+              </p>
+            </a>
+          </li>
+
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-header" style="color: black;">LIVE SITE</li>
           <li class="nav-item">
@@ -95,12 +104,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Chart</h1>
+                    <h1 class="m-0">Data Cabang</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Chart</li>
+                        <li class="breadcrumb-item active">Data Cabang</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -112,12 +121,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Chart</h1>
+                    <h1>Data Cabang</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Chart</li>
+                        <li class="breadcrumb-item active">Data Cabang</li>
                     </ol>
                 </div>
             </div>
@@ -127,63 +136,57 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
-
-                <div class="col-12 col-sm-6 col-md-3">
-                    <a href="{{ route('cmsFormRegister') }}" style="color:black;">
-                        <div class="info-box mb-3">
-                            <span class="info-box-icon elevation-1" style="background: #ffffff; color: #41a59c;">
-                                <i class="nav-icon fas fa-user-friends"></i>
-                            </span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Form Register</span>
-                                <span class="info-box-number">
-                                    {{ $master }}
-                                </span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                    </a>
-                    <!-- /.info-box -->
+            @if (session()->has('message'))
+                <div class="alert alert-success">
+                    <strong>{{session()->get('message')}}</strong>
                 </div>
-
-                <div class="col-12 col-sm-6 col-md-3">
-                    <a href="{{ route('cmsmaster') }}" style="color:black;">
-                        <div class="info-box mb-3">
-                            <span class="info-box-icon elevation-1" style="background: #ffffff; color: #41a59c;">
-                                <i class="nav-icon fas fa-person-booth"></i>
-                            </span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Hadir</span>
-                                <span class="info-box-number">
-                                    {{ $master }}
-                                </span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                    </a>
-                    <!-- /.info-box -->
+            @endif
+            <div class="card">
+                <div class="card-header">
+                    <a href="{{route('cabang.create')}}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Buat Cabang Baru</a>
                 </div>
-
-                <!-- /.col -->
+                <div class="card-body">
+                    <table class="table table-bordered table-striped text-center" id="cabang-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Cabang</th>
+                                <th>Jumlah Event</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($cabang as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->nama_kota }}</td>
+                                    <td>{{ $item->studio_count }}</td>
+                                    <td>
+                                        <form action="{{url('CMS/cabang/' . $item->id)}}" method="POST">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <!-- /.row -->
         </div>
-</div>
+    </div>
 </div>
 </section>
+@endsection
 
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-      <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-    @endsection
-
-    @section('script')
-    <script>
-    </script>
-    @endsection
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('#cabang-table').DataTable();
+    });
+</script>
+@endsection
