@@ -59,7 +59,7 @@
                     <?php
                         $qrCodeAsPng = QrCode::format('png')->size(500)->generate($user->tickets_code);
                     ?>
-                    <img src="{{ $message->embedData($qrCodeAsPng, 'nameForAttachment.png') }}" />
+                    <img src="{{ $message->embedData($qrCodeAsPng, 'qrcodeAbsensiYoga.png') }}" />
                 </p>
               </td>
             </tr>

@@ -82,6 +82,8 @@ class C_PristineTickets extends Controller
 
         foreach ($studio as $value) {
             $value->tgl = Carbon::parse($value->tgl)->translatedFormat('l, d-F-Y');
+            $value->jam_mulai = Carbon::parse($value->jam_mulai)->translatedFormat('H:i');
+            $value->jam_selesai = Carbon::parse($value->jam_selesai)->translatedFormat('H:i');
         }
         return response()->json(['data' => $studio]);
     }
