@@ -77,7 +77,7 @@
                         <td>{{ $t->no_hp }}</td>
                         <td>{{ $t->alamat }}</td>
                         <td>{{ $t->studio->nama_studio }}</td>
-                        <td>{{ $t->studio->jam_mulai }} - {{ $t->jam_selesai }}</td>
+                        <td>{{ \Carbon\Carbon::parse($t->studio->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($t->studio->jam_selesai)->format('H:i') }}</td>
                         <td>
                             <a href="{{ route('registerqr_delete', $t->id_tickets) }}" type="button" class="btn btn-danger btn-sm">Delete</a>
                         </td>
