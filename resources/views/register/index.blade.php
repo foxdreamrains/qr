@@ -38,7 +38,7 @@
           <a class="nav-link active" aria-current="page" href="">QR Show</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('registerqr') }}">Add</a>
+          <a class="nav-link" href="{{route('registerqr')}}">Add</a>
         </li>
       </ul>
 
@@ -47,40 +47,46 @@
           <h1 class="text-danger pt-4 text-center mb-4">List of Products</h1>
           <hr>
           <div class="pb-2">
-            <a href="{{ route('registerqr') }}" class="btn btn-success">Create</a>
+            <a href="{{route('registerqr')}}" class="btn btn-success">Create</a>
           </div>
           <table class="table table-striped">
             <thead>
                 <tr>
-                  <th scope="col">tickets_code</th>
-                  <th scope="col">nama</th>
-                  <th scope="col">no_ktp</th>
-                  <th scope="col">email</th>
-                  <th scope="col">kode_pos</th>
-                  <th scope="col">alamat</th>
+                  <th scope="col">Tickets Code</th>
+                  <th scope="col">Nama Lengkap</th>
+                  <th scope="col">No KTP</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Kode Pos</th>
                   <th scope="col">no_hp</th>
-                  <th scope="col">event_date</th>
-                  <th scope="col">Studio dan Waktu</th>
+                  <th scope="col">Alamat</th>
+                  <th scope="col">Studio</th>
+                  <th scope="col">Waktu</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
-                @foreach($tickets as $t)
-                <tr>
-                  <td>{!! DNS2D::getBarcodeHTML('$t->tickets_code' , 'QRCODE') !!}</td>
-                  <td>{{ $t->nama }}</td>
-                  <td>{{ $t->no_ktp }}</td>
-                  <td>{{ $t->email }}</td>
-                  <td>{{ $t->kode_pos }}</td>
-                  <td>{{ $t->alamat }}</td>
-                  <td>{{ $t->no_hp }}</td>
-                  <td>{{ $t->event_date }}</td>
-                  <td>{{ $t->studio }}</td>
-                  <td>
-                     <a href="{{ route('registerqr_delete', $t->id_tickets) }}" type="button" class="btn btn-danger btn-sm">Delete</a>
-                  </td>
-                </tr>
-                @endforeach
+                @forelse ($tickets as $t)
+                    <tr>
+                        <td>
+                            {!! DNS2D::getBarcodeHTML($t->tickets_code , 'QRCODE') !!}
+                        </td>
+                        <td>{{ $t->nama }}</td>
+                        <td>{{ $t->no_ktp }}</td>
+                        <td>{{ $t->email }}</td>
+                        <td>{{ $t->kode_pos }}</td>
+                        <td>{{ $t->alamat }}</td>
+                        <td>{{ $t->no_hp }}</td>
+                        <td>{{ $t->studio->nama_studio }}</td>
+                        <td>{{ $t->studio->jam }}</td>
+                        <td>
+                            <a href="{{ route('registerqr_delete', $t->id_tickets) }}" type="button" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="10" class="text-center">Tidak Ada Data Tickets</td>
+                    </tr>
+                @endforelse
               </tbody>
           </table>
         </div>

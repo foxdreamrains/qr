@@ -9,4 +9,9 @@ class Tickets extends Model
     protected $table = "tickets";
     public $timestamps = true;
     protected $guarded = ['id_tickets'];
+
+    public function studio()
+    {
+        return $this->belongsTo(Studios::class, 'studios_id', 'id_studio');
+    }
 }

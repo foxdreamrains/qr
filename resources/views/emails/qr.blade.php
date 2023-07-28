@@ -73,21 +73,11 @@
                   <br>
                   Selamat datang di Event kami #YOGA Berikut QR Kamu ntuk Melaksanakan Kunjungan Ke Kelas Yoga.
                   <br><br>
-                  {!! DNS2D::getBarcodeHTML('21212121221' , 'QRCODE') !!}
-
+                  {!!DNS2D::getBarcodeSVG($user->tickets_code, 'QRCODE',15,15)!!}
                 </p>
-
-
               </td>
             </tr>
-
-
           </table>
-          <!--[if mso]>
-          </td>
-          </tr>
-          </table>
-          <![endif]-->
         </td>
       </tr>
     </table>

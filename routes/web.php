@@ -8,9 +8,11 @@ use App\Http\Controllers\C_PristineTickets;
 use App\Http\Controllers\C_PristineTicketsAdmin;
 
 use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 
 //FITUR CLEAR
-Route::get('/clear', function() {
+Route::get('/clear', function () {
     $exitcode = Artisan::call('optimize:clear');
     return 'DONE';
 });
@@ -24,12 +26,9 @@ Route::get('QR/delete{id}', [C_Master::class, 'generateQR_delete'])->name('QR_G_
 
 // Halaman Register QR
 Route::get('/', [C_PristineTickets::class, 'showqr'])->name('showqr')->withoutMiddleware('auth');
-Route::get('registerqr', [C_PristineTickets::class, 'registerqr'])->name('registerqr')->withoutMiddleware('auth');
-Route::get('registerqr_success', [C_PristineTickets::class, 'registerqr_success'])->name('registerqr_success')->withoutMiddleware('auth');
-Route::post('registerqr/store', [C_PristineTickets::class, 'registerqr_store'])->name('registerqr_store')->withoutMiddleware('auth');
+Route::get('/registerqr', [C_PristineTickets::class, 'create'])->name('registerqr')->withoutMiddleware('auth');
+Route::post('/reqgisterqr/post', [C_PristineTickets::class, 'store'])->name('registerqr.post')->withoutMiddleware('auth');
 Route::get('registerqr/delete{id}', [C_PristineTickets::class, 'registerqr_delete'])->name('registerqr_delete')->withoutMiddleware('auth');
-
-Route::post('registerqr/send/email', [C_PristineTickets::class, 'sendregisterqr'])->name('sendregisterqr')->withoutMiddleware('auth');
 
 Auth::routes();
 
@@ -50,3 +49,7 @@ Route::post('CMS/master/store', [C_MasterAdmin::class, 'masterstore'])->name('cm
 Route::get('CMS/master/edit/{id}', [C_MasterAdmin::class, 'masteredit'])->name('cmsmasterEdit')->middleware('auth');
 Route::post('CMS/master/update', [C_MasterAdmin::class, 'masterupdate'])->name('cmsmasterUpdate')->middleware('auth');
 Route::get('CMS/master/delete/{id}', [C_MasterAdmin::class, 'masterdelete'])->name('cmsmasterDelete')->middleware('auth');
+
+
+// json
+Route::post('/cekStudios', [C_PristineTickets::class, 'cekCabangs'])->withoutMiddleware('auth');

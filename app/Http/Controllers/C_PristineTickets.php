@@ -1,14 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-use Carbon\Carbon;
 
+use App\Mail\QrCodeMail;
+use App\Models\Cabang;
+use App\Models\Studios;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-
 use App\Models\Tickets;
-use App\Models\Products;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Milon\Barcode\DNS2D;
+use Milon\Barcode\Facades\DNS2DFacade;
+use PHPUnit\Framework\MockObject\Builder\Stub;
 
 class C_PristineTickets extends Controller
 {
@@ -23,104 +28,58 @@ class C_PristineTickets extends Controller
         return view('register.index', compact('tickets'));
     }
 
-    public function registerqr()
+    public function registerqr_delete($id)
     {
-        $ticketsCabangJakarta = Tickets::where('studio', 'Cabang-Jakarta-15-00')->where('event_date', '2023-07-24')->count();
-        $set_eventdate = "2023-07-24";
-        return view('register.qr', compact('ticketsCabangJakarta', 'set_eventdate'));
+        Tickets::where('id_tickets', $id)->delete();
+        return redirect('/');
     }
 
-    public function registerqr_success()
+    public function create()
     {
-        return view('register.success');
+        $cabang = Cabang::with('studio')->get();
+        return view('register.qr', compact('cabang'));
     }
 
-    public function registerqr_store(request $request)
+    public function store(Request $request)
     {
-        // $current = Carbon::now();
-        // $current->format('M d Y');
-        // if($request->eventdate == $current){
+        $request->validate([
+            'nama' => 'required',
+            'no_ktp' => 'required|unique:tickets',
+            'email' => 'required|unique:tickets',
+            'kode_pos' => 'required',
+            'no_hp' => 'required',
+            'alamat' => 'required',
+            'cabangs_id' => 'required',
+            'studios_id' => 'required',
+            'kota' => 'required'
+        ]);
 
-        // }
-        $tickets_code = mt_rand(1000000000,9999999999);
-
-        Tickets::create([
-            'tickets_code' => $tickets_code,
+        $user = Tickets::create([
+            'tickets_code' => Str::random(10),
+            'cabangs_id' => $request->cabangs_id,
+            'studios_id' => $request->studios_id,
             'nama' => $request->nama,
             'no_ktp' => $request->no_ktp,
             'email' => $request->email,
             'kode_pos' => $request->kode_pos,
-            'alamat' => $request->alamat,
             'no_hp' => $request->no_hp,
-            'event_date' => $request->event_date,
-            'studio' => $request->studio,
+            'alamat' => $request->alamat,
+            'kota' => $request->kota
         ]);
 
-        return redirect('/registerqr')->with('success','Pendaftaran Event telah berhasil, silahkan cek Email kamu sekarang');
+        Mail::to($user->email)->send(new QrCodeMail($user));
+
+        return redirect()->back()->with(['message' => 'Berhasil Mendaftar. Silahkan cek email anda untuk melihat ticket']);
     }
 
-    //UNTUK Send QR
-
-    public function sendregisterqr(request $request)
+    public function cekCabangs(Request $request)
     {
+        $cabangs_id = $request->cabangs_id;
+        $studio = Studios::withCount('ticket')->where('cabangs_id', $cabangs_id)->get();
 
-      $tickets_code = mt_rand(1000000000,9999999999);
-
-      Tickets::create([
-        'tickets_code' => $tickets_code,
-        'nama' => $request->nama,
-        'ktp' => $request->ktp,
-        'email' => $request->email,
-        'kode_pos' => $request->kode_pos,
-        'alamat' => $request->alamat,
-        'no_hp' => $request->no_hp,
-        'event_date' => $request->event_date,
-        'studio' => $request->studio,
-    ]);
-
-      $request->validate([
-
-          'nama' => 'required',
-
-          'email' => 'required|email',
-
-      ]);
-
-      $input = $request->all();
-
-         //  Send mail to admin
-
-      \Mail::send('emails/qr', array(
-
-        'tickets_code' => $tickets_code,
-
-        'nama' => $input['nama'],
-
-        'email' => $input['email'],
-
-        'ktp' => $input['ktp'],
-
-        'tgllahir' => $input['tgllahir'],
-
-        'location' => $input['location'],
-
-    ), function($message) use ($request){
-
-        $message->from($request->email);
-
-        $message->to("alfasauchiha261@gmail.com", "Tickets Pristine ###")->subject("Tickets Pristine ###");
-
-    });
-
-
-
-      return redirect()->back()->with(['success' => 'Thank you for your message, we will reply to your message 3 x 24 hours.']);
-
-  }
-
-  public function registerqr_delete($id)
-    {
-        Tickets::where('id_tickets', $id)->delete();
-        return redirect('/');
+        foreach ($studio as $value) {
+            $value->tgl = Carbon::parse($value->tgl)->format('l, d-F-Y');
+        }
+        return response()->json(['data' => $studio]);
     }
 }

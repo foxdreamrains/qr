@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/logo/pristine.png') }}" />
@@ -59,66 +60,159 @@
     <div class="container-fluid">
         <div class="row justify-content-md-center">
             <div class="col-md-6" style="margin-bottom: 200px; margin-top: 50px;">
+                @if (session()->has('message'))
+                    <div class="alert alert-success">
+                        <strong>{{session()->get('message')}}</strong>
+                    </div>
+                @endif
                 <div class="card px-5 mt-3 shadow">
-                    @if (session()->has('success'))
-
-                    @if(is_array(session('success')))
-                    @foreach (session('success') as $message)
-                    <h3>{{ $message }}</h3>
-                    @endforeach
-                    @else
-                    <h3>{{ session('success') }}</h3>
-                    @endif
-
-                    @endif
                     <h4 class="text-dark pt-4 text-center mb-4">Register Event</h4>
-                    <form action="{{ route('registerqr_store') }}" method="post">
+                    <form action="{{route('registerqr.post')}}" method="post">
                         @csrf
-                        <label>Nama Lengkap:</label>
-                        <input type="text" class="form-control mb-3" name="nama" requiret>
-                        <label>Nomor KTP:</label>
-                        <input type="text" class="form-control mb-3" name="no_ktp" id="no_ktp"
-                            onkeypress="return onlyNumberKey(event)"
-                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                        <label>Email:</label>
-                        <input type="text" class="form-control mb-3" name="email" requiret>
-                        <label>Kota:</label>
-                        <input type="text" class="form-control mb-3" name="kota" requiret>
-                        <label>Kode Pos:</label>
-                        <input type="text" class="form-control mb-3" name="kode_pos" requiret>
-                        <label>Alamat:</label>
-                        <input type="text" class="form-control mb-3" name="alamat" requiret>
-                        <label>No. Handphone:</label>
-                        <input type="text" class="form-control mb-3" name="no_hp" requiret>
-                        <label>Tanggal Yoga Class:</label>
-                        <label id="testtanggal"></label>
-                        <input type="date" class="form-control mb-3" name="event_date" id="event_date" requiret>
+                        <div class="form-group mb-3">
+                            <label>Nama Lengkap:</label>
+                            <input type="text" value="{{old('nama')}}" class="form-control @error('nama') is-invalid @enderror" name="nama">
+                            @error('nama')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Nomor KTP:</label>
+                            <input type="text" value="{{old('no_ktp')}}" class="form-control @error('no_ktp') is-invalid @enderror" name="no_ktp" id="no_ktp"
+                                onkeypress="return onlyNumberKey(event)"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                            @error('no_ktp')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Email Aktif:</label>
+                            <input type="email" value="{{old('email')}}" class="form-control @error('email') is-invalid @enderror" name="email">
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Kota:</label>
+                                    <input type="text" value="{{old('kota')}}" class="form-control @error('kota') is-invalid @enderror" name="kota">
+                                    @error('kota')
+                                        <div class="invalid-feedback">
+                                            {{$message}}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Kode Pos:</label>
+                                    <input type="number" value="{{old('kode_pos')}}" maxlength="4" class="form-control @error('kode_pos') is-invalid @enderror" name="kode_pos">
+                                    @error('kode_pos')
+                                        <div class="invalid-feedback">
+                                            {{$message}}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>No Handphone:</label>
+                            <input type="number" value="{{old('no_hp')}}" class="form-control @error('no_hp') is-invalid @enderror" name="no_hp">
+                            @error('no_hp')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Alamat:</label>
+                            <input type="text" value="{{old('alamat')}}" class="form-control @error('alamat') is-invalid @enderror" name="alamat">
+                            @error('alamat')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
+                        </div>
 
-                        <label>Cabang Studio Yoga:</label>
-                        <select class="form-select" aria-label="Cabang Studio" name="studio" style="margin-bottom: 10px;">
-                            <option value="" selected>Pilih Cabang Studio Yoga</option>
-                            <option value="Cabang-Jakarta-15-00" id="stdJakarta">Nama Studio, Jakarta - 15:00</option>
-                            <option value="Cabang-Bogor-15-00" id="stdBogor">Nama Studio, Bogor - 15:00</option>
-                            <option value="Cabang-Depok-12-00">Nama Studio, Depok - 12:00 </option>
-                            <option value="Cabang-Bekasi-12-00">Nama Studio, Bekasi - 12-00</option>
-                            <option value="Cabang-Tangerang-09:00">Nama Studio, Tangerang - 09:00</option>
-                        </select>
+                        <div class="form-group mb-3">
+                            <label>Cabang Studio Yoga:</label>
+                            <select class="form-select @error('cabangs_id') is-invalid @enderror" name="cabangs_id" id="cabangs_id" style="margin-bottom: 10px;">
+                                <option value="" selected>Pilih Cabang Studio Yoga</option>
+                                @foreach ($cabang as $item)
+                                    <option value="{{$item->id}}">{{$item->nama_kota}}</option>
+                                @endforeach
+                            </select>
+                            @error('cabangs_id')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label>Tanggal Yoga Class:</label>
+                            <select class="form-select @error('studios_id') is-invalid @enderror" name="studios_id" id="studios_id" style="margin-bottom: 10px;">
+                            </select>
+                            @error('studios_id')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
+                        </div>
+
                         <button type="submit" class="btn btn-success col-md-3 mt-4 mb-4">Submit</button>
                     </form>
-
-                    <input type="hidden" id="ticketsCabangJakarta" value="{{ $ticketsCabangJakarta }}">
-                    <input type="hidden" id="get_eventdate" value="">
-                    <input type="hidden" id="set_eventdate" value="{{ $set_eventdate }}">
                 </div>
             </div>
         </div>
     </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#cabangs_id').change(function(e) {
+            let cabangs_id = $(this).val();
+            $.ajax({
+                url: '/cekStudios',
+                type: 'POST',
+                data: {
+                    cabangs_id: cabangs_id
+                },
+                success: function(res) {
+                    let html = '';
+                    $.each(res.data, function(key, val) {
+                        console.log(val);
+                        if (val.ticket_count < 1) {
+                            html += `<option value="${val.id_studio}" selected>${val.tgl} - ${val.jam_mulai} - ${val.jam_selesai}</option>`;
+                        } else {
+                            html += `<option disabled value="${val.id_studio}" selected>${val.tgl} - ${val.jam_mulai} - ${val.jam_selesai} |  <span class="text-danger">Full Booked</span></option>`;
+                        }
+                    });
+                    $('#studios_id').html(html)
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        });
+    });
+
     $('#no_ktp').keyup(function() {
         var foo = $(this).val().split("-").join(""); // remove hyphens
         if (foo.length > 0) {
@@ -133,29 +227,6 @@
         return true;
         return true;
     }
-</script>
-<script>
-    const event_date = document.getElementById('event_date');
-
-    event_date.addEventListener('input', function() {
-    const selectedDate = event_date.value;
-    document.getElementById("get_eventdate").value = selectedDate
-    var get_event_date = $("#get_eventdate").val();
-    var set_event_date = $("#set_eventdate").val();
-    var ticketjkt = $("#ticketsCabangJakarta").val();
-
-    // if(get_event_date == set_event_date){
-    if(selectedDate == set_event_date){
-        if(ticketjkt < 20)
-        {
-            $("#stdJakarta").prop('disabled', 'disabled');
-            $("#stdJakarta").css("background-color","lightgrey");
-            $("#stdJakarta").html("Nama Studio, Jakarta - 15:00 | Full Booked");
-
-        }
-    }
-
-    });
 </script>
 </body>
 

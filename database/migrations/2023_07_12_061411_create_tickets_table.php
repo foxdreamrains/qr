@@ -15,11 +15,16 @@ class CreateTicketsTable extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id('id_tickets');
+            $table->string('tickets_code');
+            $table->foreignId('studios_id');
+            $table->foreignId('cabangs_id');
             $table->string('nama');
-            $table->string('email');
-            $table->string('ktp');
-            $table->date('tgllahir');
-            $table->string('location');
+            $table->string('no_ktp')->unique();
+            $table->string('email')->unique();
+            $table->string('kota');
+            $table->string('kode_pos');
+            $table->string('no_hp');
+            $table->longText('alamat');
             $table->timestamps();
         });
     }
