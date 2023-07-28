@@ -83,6 +83,7 @@
                             <input type="text" value="{{old('no_ktp')}}" class="form-control @error('no_ktp') is-invalid @enderror" name="no_ktp" id="no_ktp"
                                 onkeypress="return onlyNumberKey(event)"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                            <div class="error text-danger"></div>
                             @error('no_ktp')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -167,6 +168,17 @@
                             @enderror
                         </div>
 
+                        <div class="form-group mb-3">
+                            <div class="row">
+                                 <div class="col-md-1">
+                                    <input type="checkbox" name="" id="" required>
+                                </div>
+                                <div class="col-md-10">
+                                    <label for="">Saya menyetujui untuk mengirim promosi dari Email maupun SMS</label>
+                                </div>
+                            </div>
+                        </div>
+
                         <button type="submit" class="btn btn-success col-md-3 mt-4 mb-4">Submit</button>
                     </form>
                 </div>
@@ -199,9 +211,9 @@
                     $.each(res.data, function(key, val) {
                         console.log(val);
                         if (val.ticket_count < 25) {
-                            html += `<option value="${val.id_studio}" selected>${val.tgl} - ${val.jam_mulai} - ${val.jam_selesai}</option>`;
+                            html += `<option value="${val.id_studio}">${val.tgl} - ${val.jam_mulai} - ${val.jam_selesai}</option>`;
                         } else {
-                            html += `<option disabled value="${val.id_studio}" selected>${val.tgl} - ${val.jam_mulai} - ${val.jam_selesai} |  <span class="text-danger">Full Booked</span></option>`;
+                            html += `<option disabled value="${val.id_studio}">${val.tgl} - ${val.jam_mulai} - ${val.jam_selesai} |  <span class="text-danger">Full Booked</span></option>`;
                         }
                     });
                     $('#studios_id').html(html)
@@ -210,6 +222,38 @@
                     console.log(err);
                 }
             });
+        });
+
+        $('#no_ktp').on('keyup', function() {
+            let no_ktp = $(this).val();
+
+            if (no_ktp == '') {
+                $('#no_ktp').removeClass('is-invalid');
+                $('#no_ktp').removeClass('is-valid');
+                $('.error').html('');
+            } else {
+                $.ajax({
+                    url: '/cekNoKtp',
+                    type: 'POST',
+                    data: {
+                        no_ktp: no_ktp
+                    },
+                    success: function(res) {
+                        console.log(res);
+                        if (res.code == 400) {
+                            $('#no_ktp').addClass('is-invalid');
+                            $('.error').html('Nik Has Alredy Been Taken.');
+                        } else if(res.code == 200) {
+                            $('#no_ktp').removeClass('is-invalid');
+                            $('#no_ktp').addClass('is-valid');
+                            $('.error').html('');
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+            }
         });
     });
 

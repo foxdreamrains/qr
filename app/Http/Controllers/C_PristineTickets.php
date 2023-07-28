@@ -10,10 +10,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Tickets;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
-use Milon\Barcode\DNS2D;
-use Milon\Barcode\Facades\DNS2DFacade;
-use PHPUnit\Framework\MockObject\Builder\Stub;
 
 class C_PristineTickets extends Controller
 {
@@ -78,8 +74,21 @@ class C_PristineTickets extends Controller
         $studio = Studios::withCount('ticket')->where('cabangs_id', $cabangs_id)->get();
 
         foreach ($studio as $value) {
-            $value->tgl = Carbon::parse($value->tgl)->format('l, d-F-Y');
+            $value->tgl = Carbon::parse($value->tgl)->translatedFormat('l, d-F-Y');
         }
         return response()->json(['data' => $studio]);
+    }
+
+    public function cekNoKtp(Request $request)
+    {
+        $noKtp = $request->no_ktp;
+
+        $ceking = Tickets::isKtpNumberExists($noKtp);
+
+        if (!$ceking) {
+            return response()->json(['code' => 200]);
+        } else {
+            return response()->json(['code' => 400]);
+        }
     }
 }

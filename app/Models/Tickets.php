@@ -14,4 +14,9 @@ class Tickets extends Model
     {
         return $this->belongsTo(Studios::class, 'studios_id', 'id_studio');
     }
+
+    public static function isKtpNumberExists($ktpNumber)
+    {
+        return self::where('no_ktp', $ktpNumber)->exists();
+    }
 }

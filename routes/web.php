@@ -53,3 +53,4 @@ Route::get('CMS/master/delete/{id}', [C_MasterAdmin::class, 'masterdelete'])->na
 
 // json
 Route::post('/cekStudios', [C_PristineTickets::class, 'cekCabangs'])->withoutMiddleware('auth');
+Route::post('/cekNoKtp', [C_PristineTickets::class, 'cekNoKtp'])->withoutMiddleware('auth');
