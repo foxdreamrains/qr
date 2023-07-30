@@ -50,6 +50,18 @@ class C_PristineTickets extends Controller
             'cabangs_id' => 'required',
             'studios_id' => 'required',
             'kota' => 'required'
+        ], [
+            'nama.required' => 'Nama lengkap anda tidak boleh kosong.',
+            'no_ktp.required' => 'No KTP tidak boleh kosong.',
+            'no_ktp.unique' => 'No KTP sudah terdaftar.',
+            'email' => 'Email tidak boleh kosong.',
+            'email.unique' => 'Email sudah terdaftar silahkan gunakan email yang lain.',
+            'kode_pos.required' => 'Kode Pos tidak boleh kosong.',
+            'alamat.required' => 'Almat tidak boleh kosong.',
+            'cabangs_id.required' => 'Pilih salah satu cabang.',
+            'studios_id.required' => 'Pilih salah satu Studio dan Waktu yoga class.',
+            'kota.required' => 'Kota asal tidak boleh kosong.',
+            'no_hp.required' => 'No Telephone tidak boleh kosong.'
         ]);
 
         $user = Tickets::create([

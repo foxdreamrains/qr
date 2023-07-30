@@ -25,6 +25,7 @@ class CreateTicketsTable extends Migration
             $table->string('kode_pos');
             $table->string('no_hp');
             $table->longText('alamat');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

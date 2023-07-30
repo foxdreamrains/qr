@@ -75,6 +75,15 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="{{ route('absensi.index') }}" class="nav-link" style="color: black;">
+              <i class="nav-icon fas fa-qrcode" style="color: black;"></i>
+              <p>
+                Data Absensi
+              </p>
+            </a>
+          </li>
+
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-header" style="color: black;">LIVE SITE</li>
             <li class="nav-item">

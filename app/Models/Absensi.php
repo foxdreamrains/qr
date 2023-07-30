@@ -2,13 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tickets extends Model
+class Absensi extends Model
 {
-    protected $table = "tickets";
-    public $timestamps = true;
-    protected $guarded = ['id_tickets'];
+    use HasFactory;
+    protected $tbale = 'absensis';
+    protected $guarded = [];
+
+    public function ticket()
+    {
+        return $this->belongsTo(Tickets::class, 'tickets_id', 'id_tickets');
+    }
 
     public function studio()
     {
@@ -18,10 +24,5 @@ class Tickets extends Model
     public function cabang()
     {
         return $this->belongsTo(Cabang::class, 'cabangs_id', 'id');
-    }
-
-    public static function isKtpNumberExists($ktpNumber)
-    {
-        return self::where('no_ktp', $ktpNumber)->exists();
     }
 }

@@ -21,7 +21,7 @@ class DataEventController extends Controller
      */
     public function index()
     {
-        $studios = Studios::with('cabang', 'ticket')->withCount('ticket')->get();
+        $studios = Studios::with('cabang', 'ticket')->withCount('ticket', 'absensi')->get();
         return view('dataEvent.index', compact('studios'));
     }
 

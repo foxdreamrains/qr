@@ -83,7 +83,7 @@
                             <input type="text" value="{{old('no_ktp')}}" class="form-control @error('no_ktp') is-invalid @enderror" name="no_ktp" id="no_ktp"
                                 onkeypress="return onlyNumberKey(event)"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                            <div class="error text-danger"></div>
+                            <span class="error text-danger mt-2"></span>
                             @error('no_ktp')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -171,7 +171,7 @@
                         <div class="form-group mb-3">
                             <div class="row">
                                  <div class="col-md-1">
-                                    <input type="checkbox" name="" id="" required>
+                                    <input type="checkbox" name="" id="">
                                 </div>
                                 <div class="col-md-10">
                                     <label for="">Saya menyetujui untuk mengirim promosi dari Email maupun SMS</label>
@@ -241,7 +241,7 @@
                         console.log(res);
                         if (res.code == 400) {
                             $('#no_ktp').addClass('is-invalid');
-                            $('.error').html('Nik Has Alredy Been Taken.');
+                            $('.error').html('No KTP sudah terdaftar.');
                         } else if(res.code == 200) {
                             $('#no_ktp').removeClass('is-invalid');
                             $('#no_ktp').addClass('is-valid');

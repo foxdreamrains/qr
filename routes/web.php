@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsensiQrController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\C_Master;
 use App\Http\Controllers\C_MasterAdmin;
@@ -58,6 +59,11 @@ Route::post('CMS/event/create', [DataEventController::class, 'store'])->name('ev
 Route::put('CMS/event/update/{id_studio}', [DataEventController::class, 'update'])->name('event.update')->middleware(['auth']);
 Route::delete('CMS/event/{id}', [DataEventController::class, 'destroy'])->name('event.delete')->middleware(['auth']);
 
+// absensi
+Route::get('CMS/absensi', [AbsensiQrController::class, 'index'])->name('absensi.index')->middleware(['auth']);
+Route::post('/saveAbsensi', [AbsensiQrController::class, 'store'])->withoutMiddleware('auth');
+Route::post('CMS/absensi/reset', [AbsensiQrController::class, 'destroy'])->withoutMiddleware('auth');
+
 // # Master
 Route::get('CMS/master', [C_MasterAdmin::class, 'master'])->name('cmsmaster')->middleware('auth');
 Route::get('CMS/master/add', [C_MasterAdmin::class, 'masteradd'])->name('cmsmasterAdd')->middleware('auth');
@@ -70,3 +76,4 @@ Route::get('CMS/master/delete/{id}', [C_MasterAdmin::class, 'masterdelete'])->na
 // json
 Route::post('/cekStudios', [C_PristineTickets::class, 'cekCabangs'])->withoutMiddleware('auth');
 Route::post('/cekNoKtp', [C_PristineTickets::class, 'cekNoKtp'])->withoutMiddleware('auth');
+Route::post('/getTextQr', [AbsensiQrController::class, 'show'])->withoutMiddleware('auth');

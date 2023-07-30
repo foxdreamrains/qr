@@ -20,4 +20,9 @@ class Studios extends Model
     {
         return $this->belongsTo(Cabang::class, 'cabangs_id', 'id');
     }
+
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'studios_id', 'id_studio');
+    }
 }

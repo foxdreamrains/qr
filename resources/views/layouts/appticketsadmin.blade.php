@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="csrf-token" content="{{ csrf_token() }}" />
   <link rel="icon" type="image/png" href="{{ asset('images/logo/pristine.png') }}">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -120,24 +121,23 @@
 <script src="{{ asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
 {{-- <script src="{{ asset('js/chart.js') }}"></script> --}}
 <script src="https://code.highcharts.com/highcharts.js"></script>
-
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript">
 <script>
-    $(function () {
-    // Summernote
-    $('#summernote_ind').summernote({
-      height : 150,
-    })
+   $(document).ready(function() {
+       $('#summernote_ind').summernote({
+         height : 150,
+       })
 
-    $('#summernote_eng').summernote({
-      height : 150,
-    })
+       $('#summernote_eng').summernote({
+         height : 150,
+       })
+    //    CodeMirror
+       CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
+         mode: "htmlmixed",
+         theme: "monokai"
+       });
+   });
 
-    // CodeMirror
-    CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
-      mode: "htmlmixed",
-      theme: "monokai"
-    });
-  })
     $('#articleimg').on('change',function(){
                 //get the file name
                 var fileName = $(this).val();
